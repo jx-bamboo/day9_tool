@@ -2,7 +2,7 @@
 service: day9_tool
 
 # Name of the container image (use your-user/app-name on external registries).
-image: day9_tool
+image: jxbamboo/day9_tool
 
 # Deploy to these servers.
 servers:
@@ -43,6 +43,7 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
+    - POSTGRES_PASSWORD
   clear:
     DB_HOST: day9_tool-db
     DB_PORT: 5432
