@@ -14,9 +14,26 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 # Rails app lives here
 WORKDIR /rails
 
+# 安装 Ruby 原生扩展所需的系统依赖
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    gcc \
+    g++ \
+    make \
+    automake \
+    autoconf \
+    libtool \
+    pkg-config \
+    libffi-dev \
+    libssl-dev \
+    libgmp-dev \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 automake libssl-dev libffi-dev libgmp-dev pkg-config && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
     ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
