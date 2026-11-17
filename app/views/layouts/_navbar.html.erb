@@ -1,0 +1,22 @@
+<!--<ul class="nav pill-nav" role="tablist">
+  <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pane-address" type="button">地址管理</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-disperse" type="button">执行分发</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-tokens" type="button">币种管理</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#pane-transfers" type="button">分发记录</button></li>
+</ul>-->
+<ul class="nav pill-nav" role="tablist">
+  <%= nav_link "首页", home_index_path %>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      地址管理
+    </a>
+    <ul class="dropdown-menu bg-dark">
+      <li><a class="dropdown-item text-secondary fs11" href="<%= from_addresses_path %>">分发地址</a></li>
+      <li><a class="dropdown-item text-secondary fs11" href="<%= to_addresses_path %>">接收地址</a></li>
+    </ul>
+  </li>
+  <%= nav_link "执行分发", new_dispatch_transfers_path %>
+  <%= nav_link "币种管理", tokens_path %>
+  <%= nav_link "分发记录", transfers_path %>
+  <%= nav_link "审计日志", audit_logs_path %>
+</ul>

@@ -1,0 +1,35 @@
+<div class="modal fade" id="genFromModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_with url: from_addresses_path, method: :post, local: true do |f| %>
+        <div class="modal-header">
+          <h5 class="modal-title">批量生成分发地址</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">生成数量</label>
+            <%= number_field_tag :count, 10, min: 1, max: 500, class: "form-control num" %>
+            <div class="form-text mt-1">单次最多 500 个。</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">加密密码</label>
+            <%= password_field_tag :encryption_password, nil, minlength: 8, class: "form-control", autocomplete: "new-password" %>
+            <div class="form-text mt-1">至少 8 位，用于加密私钥。系统不存储该密码。</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">确认加密密码</label>
+            <%= password_field_tag :encryption_password_confirmation, nil, minlength: 8, class: "form-control", autocomplete: "new-password" %>
+          </div>
+          <div class="badge-t yellow w-100 justify-content-center" style="padding:6px 10px;">
+            忘记密码将无法恢复私钥，请妥善保管
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-t ghost" data-bs-dismiss="modal">取消</button>
+          <%= f.submit "生成", class: "btn-t primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

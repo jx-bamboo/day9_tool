@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  from_address: one
+  to_address: one
+  token: one
+  batch_id: MyString
+  tx_hash: MyString
+  amount: 9.99
+  status: 1
+  error_message: MyText
+  broadcasted_at: 2026-11-11 19:43:44
+  confirmed_at: 2026-11-11 19:43:44
+
+two:
+  from_address: two
+  to_address: two
+  token: two
+  batch_id: MyString
+  tx_hash: MyString
+  amount: 9.99
+  status: 1
+  error_message: MyText
+  broadcasted_at: 2026-11-11 19:43:44
+  confirmed_at: 2026-11-11 19:43:44

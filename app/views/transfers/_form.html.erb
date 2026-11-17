@@ -1,0 +1,67 @@
+<%= form_with(model: transfer) do |form| %>
+  <% if transfer.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(transfer.errors.count, "error") %> prohibited this transfer from being saved:</h2>
+
+      <ul>
+        <% transfer.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :from_address_id, style: "display: block" %>
+    <%= form.text_field :from_address_id %>
+  </div>
+
+  <div>
+    <%= form.label :to_address_id, style: "display: block" %>
+    <%= form.text_field :to_address_id %>
+  </div>
+
+  <div>
+    <%= form.label :token_id, style: "display: block" %>
+    <%= form.text_field :token_id %>
+  </div>
+
+  <div>
+    <%= form.label :batch_id, style: "display: block" %>
+    <%= form.text_field :batch_id %>
+  </div>
+
+  <div>
+    <%= form.label :tx_hash, style: "display: block" %>
+    <%= form.text_field :tx_hash %>
+  </div>
+
+  <div>
+    <%= form.label :amount, style: "display: block" %>
+    <%= form.text_field :amount %>
+  </div>
+
+  <div>
+    <%= form.label :status, style: "display: block" %>
+    <%= form.number_field :status %>
+  </div>
+
+  <div>
+    <%= form.label :error_message, style: "display: block" %>
+    <%= form.textarea :error_message %>
+  </div>
+
+  <div>
+    <%= form.label :broadcasted_at, style: "display: block" %>
+    <%= form.datetime_field :broadcasted_at %>
+  </div>
+
+  <div>
+    <%= form.label :confirmed_at, style: "display: block" %>
+    <%= form.datetime_field :confirmed_at %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,92 @@
+<%
+=begin%>
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Tokens" %>
+
+<h1>Tokens</h1>
+
+<div id="tokens">
+  <% @tokens.each do |token| %>
+    <%= render token %>
+    <p>
+      <%= link_to "Show this token", token %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New token", new_token_path %>
+<%
+=end%>
+
+<div class="panel mb-4">
+  <div class="panel-header">
+    <span>原生币</span>
+    <span class="text-mute" style="font-size:11px;">系统内置，不可删除</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table-terminal">
+      <thead>
+        <tr>
+          <th>符号</th><th>名称</th><th class="num">精度</th><th>类型</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tokens.select(&:native?).each do |t| %>
+          <tr>
+            <td><span class="badge-t green"><%= t.symbol %></span></td>
+            <td class="text-dim"><%= t.name %></td>
+            <td class="num"><%= t.decimals %></td>
+            <td><span class="badge-t dim">native</span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-header"><span>BEP-20 代币</span></div>
+  <div class="panel-body">
+    <%= form_with url: tokens_path, method: :post, local: true do |f| %>
+      <label class="form-label">代币合约地址</label>
+      <div class="input-group mb-2">
+        <%= text_field_tag :contract_address, nil,
+              class: "form-control num",
+              placeholder: "0x...",
+              required: true,
+              pattern: "0x[a-fA-F0-9]{40}" %>
+        <%= f.submit "导入币种",
+              class: "btn-t primary",
+              data: { turbo_submits_with: "导入中…" } %>
+      </div>
+      <div class="form-text">系统将通过 ABI 读取合约的 name / symbol / decimals 并保存。</div>
+    <% end %>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table-terminal">
+      <thead>
+        <tr>
+          <th>符号</th><th>名称</th><th class="num">精度</th><th>合约地址</th><th class="num">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tokens.reject(&:native?).each do |t| %>
+          <tr>
+            <td><span class="badge-t green"><%= t.symbol %></span></td>
+            <td class="text-dim"><%= t.name %></td>
+            <td class="num"><%= t.decimals %></td>
+            <td><code class="num text-mute" style="font-size:11px;"><%= t.contract_address %></code></td>
+            <td class="num">
+              <%= button_to "删除", token_path(t), method: :delete,
+                    class: "btn-t ghost sm",
+                    style: "color:var(--danger);",
+                    form: { data: { turbo_confirm: "确认删除？" } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

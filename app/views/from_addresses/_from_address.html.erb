@@ -1,0 +1,34 @@
+<div id="<%= dom_id from_address %>">
+  <div>
+    <strong>地址:</strong>
+    <%= from_address.address %>
+  </div>
+
+  <div>
+    <strong>私钥:</strong>
+    <span class="badge-t green">
+      已加密
+    </span>
+  </div>
+
+  <div>
+    <strong>Label:</strong>
+    <%= from_address.label %>
+  </div>
+
+  <div>
+    <strong>BNB:</strong>
+    <%= from_address.bnb_balance %>
+  </div>
+
+  <div>
+    <strong>其他Token:</strong>
+    <%= from_address.token_balances %>
+  </div>
+
+  <div>
+    <strong>余额检测:</strong>
+    <%= from_address.balance_checked_at %>
+  </div>
+
+</div>

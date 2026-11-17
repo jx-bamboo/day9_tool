@@ -1,0 +1,35 @@
+<div class="panel">
+  <div class="panel-header">
+    <span>审计日志</span>
+    <span class="text-mute" style="font-size:11px;">仅记录操作上下文，不记录密码或私钥</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table-terminal">
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>用户</th>
+          <th>动作</th>
+          <th>对象</th>
+          <th>IP</th>
+          <th>元数据</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @logs.each do |log| %>
+          <tr>
+            <td class="text-mute" style="font-size:11px;"><%= log.created_at.in_time_zone('Asia/Shanghai').strftime("%Y.%m.%d %H:%M:%S") %></td>
+            <td class="text-dim" style="font-size:12px;"><%= log.user&.email || "-" %></td>
+            <td><span class="badge-t dim"><%= log.action %></span></td>
+            <td class="text-mute" style="font-size:11px;"><%= log.auditable_type %>#<%= log.auditable_id %></td>
+            <td class="text-mute" style="font-size:11px;"><%= log.ip_address %></td>
+            <td><code class="num text-mute" style="font-size:10px;"><%= log.metadata.to_json %></code></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel-header">
+    <span class="text-mute"><%== @pagy.series_nav %></span>
+  </div>
+</div>

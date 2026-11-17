@@ -1,0 +1,17 @@
+<tr id="transfer_row_<%= transfer.id %>">
+  <td class="text-mute fs11"><%= transfer.created_at.in_time_zone('Asia/Shanghai').strftime("%Y.%m.%d %H:%M:%S") %></td>
+  <td><code class="num text-dim fs11"><%= transfer.batch_id[0, 8] %></code></td>
+  <td><code class="num text-dim fs11"><%= short_address(transfer.from_address.address) %></code></td>
+  <td><code class="num text-dim fs11"><%= short_address(transfer.to_address.address) %></code></td>
+  <td><span class="badge-t dim"><%= transfer.token.symbol %></span></td>
+  <td class="num"><%= fmt_wei(transfer.amount, transfer.token.decimals) %></td>
+  <td><%= transfer_status_badge(transfer.status) %></td>
+  <td class="num">
+    <% if transfer.tx_hash.present? %>
+      <%= link_to "#{transfer.tx_hash[0, 6]}…", "https://bscscan.com/tx/#{transfer.tx_hash}", target: "_blank", class: "fs11" %>
+    <% end %>
+    <% if transfer.error_message.present? %>
+      <div class="text-mute fs10"><%= truncate(transfer.error_message, length: 40) %></div>
+    <% end %>
+  </td>
+</tr>

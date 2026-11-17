@@ -1,0 +1,64 @@
+
+<style>
+  :root {
+    --bg: #09090b;
+    --bg-elev: #111113;
+    --border-strong: rgba(255,255,255,0.12);
+    --text: #e4e4e7;
+    --text-dim: #a1a1aa;
+    --accent: #34d399;
+    --accent-text: #6ee7b7;
+    --font-sans: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; }
+  .brand-mark {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: var(--accent); color: #052e16;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 20px;
+  }
+  .btn-t {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 10px 24px; border-radius: 6px;
+    font-size: 13px; font-weight: 500; line-height: 1.4;
+    border: 1px solid transparent; cursor: pointer;
+    transition: all .15s;
+  }
+  .btn-t.primary {
+    background: var(--accent); color: #052e16; border-color: var(--accent);
+  }
+  .btn-t.primary:hover { background: var(--accent-text); }
+  .btn-t.ghost {
+    background: transparent; color: var(--text-dim); border-color: var(--border-strong);
+  }
+  .btn-t.ghost:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+  .text-dim { color: var(--text-dim); }
+</style>
+
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+  <div style="text-align: center; max-width: 600px; padding: 0 20px;">
+    <div class="brand-mark" style="margin: 0 auto 24px;">
+      <%= image_tag "logo.jpg", width: 60, style: "border-radius: 30px" %>
+    </div>
+    <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 16px; color: var(--text);">
+      BSC Dispatch
+    </h1>
+    <p class="text-dim" style="font-size: 15px; margin-bottom: 32px;">
+      Binance Smart Chain 批量转账与地址管理系统<br>
+      仅限内部使用
+    </p>
+    <div style="display: flex; gap: 8px; justify-content: center;">
+      <%= link_to "登录", new_user_session_path, class: "btn-t primary" %>
+      <%#= link_to "注册", new_user_registration_path, class: "btn-t ghost" %>
+    </div>
+  </div>
+</div>

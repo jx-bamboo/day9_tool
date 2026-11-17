@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "BSC分发系统" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <style>
+      body {
+        display: flex;
+        height: 100vh;
+        min-height: 35rem;
+        align-items: center;
+        justify-content: center;
+
+        background-color: #1e5192;
+        background-image: url(<%= asset_path('back.jpeg') %>);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      .card-wrap {
+        position: relative;
+        margin: 0 auto;
+      }
+
+      @media(min-width:769px) {
+        .card-wrap {
+          max-width: 450px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>

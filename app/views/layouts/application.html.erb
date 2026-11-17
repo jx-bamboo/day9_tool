@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Day9 Tool" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Day9 Tool">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%= turbo_stream_from "toasts" %>
+    <div id="toast_container" class="position-fixed top-0 end-0 p-3" style="z-index:9999; max-width:420px;"></div>
+
+    <%= render "layouts/header" %>
+
+    <div class="container">
+      <div class="col-sm-12">
+        <% if notice.present? %>
+          <div class="alert alert-success rounded border mb-0 mt-3 text-danger" role="alert">
+            <i class="bi bi-check2"></i>
+            <%= notice %>
+          </div>
+        <% end %>
+        <% if alert.present? %>
+          <div class="alert alert-success rounded border mb-0 mt-3 text-danger" role="alert">
+            <i class="bi bi-check2"></i>
+            <%= alert %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <main class="container-xxl py-3" style="max-width:1200px;">
+      <%= render "layouts/navbar" %>
+      <%= yield %>
+      <%= render "layouts/footer" %>
+    </main>
+
+    <!-- 全局 modal：二维码 -->
+    <%= render "shared/qr_modal" %>
+    <!-- 全局 toast 容器 -->
+    <div id="toast_container"></div>
+    <!-- 传统 flash 转 toast -->
+    <% flash.each do |type, msg| %>
+      <div class="toast-item" data-controller="toast" style="position:fixed; top:64px; right:20px; z-index:9999; max-width:420px;">
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge-t <%= type.to_s == 'notice' ? 'green' : 'red' %>"><%= type %></span>
+          <span style="font-size:12px;"><%= msg %></span>
+        </div>
+      </div>
+    <% end %>
+    <%#= render "shared/exec_password_modal" %>
+  </body>
+</html>

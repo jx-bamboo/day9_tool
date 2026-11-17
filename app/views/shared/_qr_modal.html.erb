@@ -1,0 +1,22 @@
+<div class="modal fade" id="qrModal" tabindex="-1" data-controller="qr">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">扫码地址</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div id="qrCodeContainer" data-qr-target="container"
+             class="d-flex justify-content-center mb-3" style="min-height:200px;"></div>
+        <code class="num break-all text-dim" data-qr-target="address" style="font-size:11px;"></code>
+        <div class="mt-3">
+          <button class="btn-t ghost sm"
+                  data-controller="clipboard"
+                  data-action="click->clipboard#copy"
+                  data-clipboard-text-value="">复制地址</button>
+        </div>
+        <div class="form-text mt-2">可用于人工转账、充值、对账</div>
+      </div>
+    </div>
+  </div>
+</div>

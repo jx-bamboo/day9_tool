@@ -1,0 +1,56 @@
+<div class="panel mb-4">
+  <div class="panel-header">
+    <div class="d-flex align-items-center gap-2">
+      <span>分发地址</span>
+      <span class="badge-t dim num" style="text-transform:none;">用于向其他地址转账</span>
+    </div>
+    <div class="d-flex gap-2">
+      <%= button_to "刷新余额", refresh_balances_from_addresses_path, method: :post, class: "btn-t ghost sm ms-1" %>
+      <button class="btn-t ghost sm" data-bs-toggle="modal" data-bs-target="#importFromModal">导入地址</button>
+      <button class="btn-t primary sm" data-bs-toggle="modal" data-bs-target="#genFromModal">生成分发地址</button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table-terminal">
+      <thead>
+        <tr>
+          <th>地址</th>
+          <th class="num">BNB</th>
+          <th class="num" style="width:200px;">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @from_addresses.each do |from| %>
+        <tr>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge-t <%= from.signable? ? 'green' : 'dim' %>">
+                <%= from.signable? ? "可执行" : "仅展示" %>
+              </span>
+              <code class="num text-dim" style="font-size:12px;"><%= short_address from.address %></code>
+            </div>
+          </td>
+          <td class="num"><%= from.bnb_balance || 0 %></td>
+          <td class="num d-flex justify-content-end">
+            <button class="btn-t ghost sm icon-only" title="二维码"
+                    data-bs-toggle="modal" data-bs-target="#qrModal"
+                    data-qr-address="<%= from.address %>">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/>
+                <path d="M18 14h3v3M14 21h3v-3M18 21h3"/>
+              </svg>
+            </button>
+          </td>
+        </tr>
+        <% end %>
+        <% if @from_addresses.empty? %>
+          <tr><td colspan="5" class="text-center text-mute py-4">还没有分发地址</td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <!--<div class="panel-header" style="border-top:1px solid var(--border); border-bottom:none;">
+    <span class="text-mute" style="font-size:11px;">共 2 条</span>
+  </div>-->
+</div>

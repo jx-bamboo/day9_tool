@@ -1,0 +1,90 @@
+<% content_for :title, "To addresses" %>
+
+<div class="panel mb-4">
+  <div class="panel-header">
+    <div class="d-flex align-items-center gap-2">
+      <span>接收地址</span>
+      <span class="badge-t dim num" style="text-transform:none;">用于接收其他地址转账</span>
+    </div>
+    <div class="d-flex gap-2">
+      <%= button_to "刷新余额", refresh_balances_to_addresses_path, method: :post, class: "btn-t ghost sm ms-1" %>
+      <button type="button" class="btn-t ghost sm" data-bs-toggle="modal" data-bs-target="#backupToModal">
+        备份私钥
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table-terminal">
+      <thead>
+        <tr>
+          <th>地址</th>
+          <th class="num">BNB</th>
+          <th class="num">其他Token</th>
+          <th class="num">余额检测</th>
+          <th class="num" style="width:200px;">操作</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <div id="to_addresses">
+          <% @to_addresses.each do |to_address| %>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge-t <%= to_address.signable? ? 'green' : 'dim' %>">
+                    <%= to_address.signable? ? "可执行" : "仅展示" %>
+                  </span>
+
+                  <code class="num text-dim" style="font-size:12px;"><%= short_address to_address.address %></code>
+                </div>
+              </td>
+              <td class="num"><%= to_address.bnb_balance %></td>
+              <td class="num"><%= to_address.token_balances %></td>
+              <td class="num"><%= to_address.balance_checked_at&.in_time_zone('Asia/Shanghai')&.strftime('%Y.%m.%d %H:%M:%S') %></td>
+
+              <td class="num d-flex justify-content-end">
+                <button
+                  class="btn-t ghost sm icon-only"
+                  title="二维码"
+                  data-bs-toggle="modal"
+                  data-bs-target="#qrModal"
+                  data-qr-address="<%= to_address.address %>"
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                    <rect x="14" y="14" width="3" height="3" />
+
+                    <path d="M18 14h3v3M14 21h3v-3M18 21h3" />
+                  </svg>
+                </button>
+                <%#= link_to "详细", to_address, class: "btn-t ghost sm ms-1" %>
+                <%= button_to "删除", to_address, method: :delete, form: { data: { turbo_confirm: "确认删除？" } }, class: "btn-t ghost sm ms-1 border-warning" %>
+              </td>
+            </tr>
+          <% end %>
+        </div>
+
+        <% if @to_addresses.empty? %>
+          <tr>
+            <td colspan="5" class="text-center text-mute py-4">还没有分发地址</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel-header">
+    <span class="text-mute"><%== @pagy.series_nav %></span>
+  </div>
+</div>
+<%= render "shared/backup_keystore_modal", modal_id: "backupToModal", url: backup_keystore_to_addresses_path, scope_label: "接收地址" %>

@@ -1,0 +1,11 @@
+<% content_for :title, "New to address" %>
+
+<h1>New to address</h1>
+
+<%= render "form", to_address: @to_address %>
+
+<br>
+
+<div>
+  <%= link_to "Back to to addresses", to_addresses_path %>
+</div>

@@ -1,0 +1,12 @@
+<% content_for :title, "Editing from address" %>
+
+<h1>Editing from address</h1>
+
+<%= render "form", from_address: @from_address %>
+
+<br>
+
+<div>
+  <%= link_to "Show this from address", @from_address %> |
+  <%= link_to "Back to from addresses", from_addresses_path %>
+</div>

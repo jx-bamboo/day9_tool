@@ -1,0 +1,155 @@
+<div data-controller="dispatch">
+  <div class="row g-3">
+    <!-- 左：参数 -->
+    <div class="col-lg-4">
+      <div class="panel h-100">
+        <div class="panel-header">分发来源与参数</div>
+        <div class="panel-body">
+          <label class="form-label">分发地址</label>
+          <select id="from_address_select" class="form-select mb-3">
+            <option>请选择一个分发地址</option>
+            <% @from_addresses.each do |fa| %>
+              <option value="<%= fa.id %>"><%= short_address(fa.address) %></option>
+            <% end %>
+          </select>
+
+          <label class="form-label">分发币种</label>
+          <select id="token_select" class="form-select mb-3"
+                  data-dispatch-target="tokenSelect"
+                  data-action="change->dispatch#refresh">
+            <% @tokens.each do |t| %>
+              <option value="<%= t.id %>" data-decimals="<%= t.decimals %>" data-symbol="<%= t.symbol %>">
+                <%= t.symbol %><%= t.native? ? "（原生）" : "（BEP-20）" %>
+              </option>
+            <% end %>
+          </select>
+
+          <label class="form-label">金额模式</label>
+          <div class="d-flex gap-1 mb-2">
+            <input type="radio" name="amount_mode" id="amt-fixed" value="fixed" checked
+                   class="btn-check" data-action="change->dispatch#refresh">
+            <label class="btn-t seg" for="amt-fixed">固定</label>
+            <input type="radio" name="amount_mode" id="amt-rand" value="random"
+                   class="btn-check" data-action="change->dispatch#refresh">
+            <label class="btn-t seg" for="amt-rand">随机范围</label>
+          </div>
+
+          <div class="input-group mb-2" data-dispatch-target="fixedBlock">
+            <input type="number" id="fixed_amount" value="0.01" step="0.0000001" min="0"
+                   class="form-control num"
+                   data-dispatch-target="amountInput"
+                   data-action="input->dispatch#refresh">
+            <span class="input-group-text" data-dispatch-target="unitLabel">BNB</span>
+          </div>
+
+          <div class="d-none" data-dispatch-target="randBlock">
+            <div class="input-group mb-2">
+              <span class="input-group-text">最小</span>
+              <input type="number" id="min_amount" value="0.001" step="0.0000001" min="0"
+                     class="form-control num" data-action="input->dispatch#refresh">
+            </div>
+            <div class="input-group">
+              <span class="input-group-text">最大</span>
+              <input type="number" id="max_amount" value="0.01" step="0.0000001" min="0"
+                     class="form-control num" data-action="input->dispatch#refresh">
+            </div>
+          </div>
+
+          <div class="badge-t yellow w-100 justify-content-center mt-3" style="padding:6px 10px;">
+            分发地址余额不足时请先转入 BNB 作为 gas
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右：接收地址 + 汇总 -->
+    <div class="col-lg-8">
+      <div class="panel">
+        <div class="panel-header">
+          <span>选择接收地址</span>
+          <div class="d-flex gap-2 align-items-center">
+            <span class="text-mute" style="font-size:11px;">
+              已选 <span class="num text-accent" data-dispatch-target="selectedCount">0</span> 个
+            </span>
+            <button type="button" class="btn-t ghost sm"
+                    data-action="click->dispatch#selectAll">全选本页</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table-terminal" data-dispatch-target="recvTable">
+            <thead>
+              <tr>
+                <th style="width:36px;">
+                  <input class="form-check-input" type="checkbox"
+                         data-action="change->dispatch#toggleAll">
+                </th>
+                <th>地址</th>
+                <th class="num">BNB</th>
+                <th class="num">其他</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @to_addresses.each do |ta| %>
+                <tr>
+                  <td>
+                    <input type="checkbox" class="form-check-input"
+                           name="to_address_ids[]" value="<%= ta.id %>"
+                           data-action="change->dispatch#refresh">
+                  </td>
+                  <td><code class="num text-dim" style="font-size:12px;"><%= short_address ta.address %></code></td>
+                  <td class="num"><%= ta.bnb_balance %></td>
+                  <td class="num"><%= ta.token_balances %></td>
+                </tr>
+              <% end %>
+              <% if @to_addresses.empty? %>
+                <tr><td colspan="3" class="text-center text-mute py-4">还没有接收地址</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel mt-3">
+        <div class="panel-body d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <div class="text-dim" style="font-size:12px;">
+            接收地址 <span class="num text-accent" data-dispatch-target="summaryCount">0</span> 个 ·
+            预计总额 <span class="num text-accent" data-dispatch-target="summaryAmount">0</span>
+            <span data-dispatch-target="summaryUnit">BNB</span>
+          </div>
+
+          <!-- 提交按钮：唤起密码弹窗 -->
+          <!--<button type="button" class="btn-t primary"
+                  data-action="click->password-modal#open"
+                  data-exec-title="确认批量分发"
+                  data-exec-desc="即将执行批量分发，请输入执行密码。"
+                  data-form-id="dispatchSubmitForm">
+            执行分发
+          </button>-->
+          <button type="button" class="btn-t primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#execPasswordModal"
+                  data-exec-title="确认批量分发"
+                  data-exec-desc="即将执行批量分发，请输入执行密码。"
+                  data-form-id="dispatchSubmitForm">
+            执行分发
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 真正的表单，提交后进入 TransfersController#dispatch -->
+  <%= form_with url: submit_dispatch_transfers_path, method: :post, local: true,
+                html: { id: "dispatchSubmitForm", style: "display:none;" } do %>
+    <%= hidden_field_tag :from_address_id, "", id: "form_from_address_id" %>
+    <%= hidden_field_tag :token_id, "", id: "form_token_id" %>
+    <%= hidden_field_tag :amount_mode, "fixed", id: "form_amount_mode" %>
+    <%= hidden_field_tag :fixed_amount, "", id: "form_fixed_amount" %>
+    <%= hidden_field_tag :min_amount, "", id: "form_min_amount" %>
+    <%= hidden_field_tag :max_amount, "", id: "form_max_amount" %>
+    <%= hidden_field_tag :execution_password, "", id: "form_execution_password" %>
+    <div id="form_to_address_ids"></div>
+  <% end %>
+</div>
+
+<%= render "shared/exec_password_modal" %>

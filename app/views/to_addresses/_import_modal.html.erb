@@ -1,0 +1,33 @@
+<div class="modal fade" id="importToModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_with url: do_import_to_addresses_path, method: :post, local: true do |f| %>
+        <div class="modal-header">
+          <h5 class="modal-title">导入分发地址</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="badge-t blue w-100 justify-content-center mb-3" style="padding:6px 10px;">
+            每次只能导入一条记录
+          </div>
+          <div class="mb-3">
+            <label class="form-label">私钥</label>
+            <%= text_area_tag :private_key, nil, rows: 3, class: "form-control num", style: "font-size:12px;", placeholder: "0x..." %>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">加密密码</label>
+            <%= password_field_tag :encryption_password, nil, minlength: 8, class: "form-control", autocomplete: "new-password" %>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">确认加密密码</label>
+            <%= password_field_tag :encryption_password_confirmation, nil, minlength: 8, class: "form-control", autocomplete: "new-password" %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-t ghost" data-bs-dismiss="modal">取消</button>
+          <%= f.submit "导入", class: "btn-t primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

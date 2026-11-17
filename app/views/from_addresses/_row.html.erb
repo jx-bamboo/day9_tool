@@ -1,0 +1,17 @@
+<tr>
+  <td>
+    <div class="d-flex align-items-center gap-2">
+      <span class="badge-t <%= record.signable? ? 'green' : 'dim' %>">
+        <%= record.signable? ? "可执行" : "仅展示" %>
+      </span>
+      <code class="num text-dim" style="font-size:12px;"><%= record.address %></code>
+    </div>
+  </td>
+  <td class="num"><%= record.bnb_balance || 0 %></td>
+  <td class="num">
+    <button class="btn-t ghost sm icon-only" title="二维码" data-controller="qr" data-action="click->qr#show" data-qr-address="<%= record.address %>">
+      QR
+    </button>
+    <%= button_to "查余额", refresh_balances_from_addresses_path(ids: [record.id]), method: :post, class: "btn-t ghost sm ms-1" %>
+  </td>
+</tr>

@@ -1,0 +1,54 @@
+<% if @active_batch_id %>
+  <% content_for :head if false %>
+  <%= turbo_stream_from "batch_#{@active_batch_id}" %>
+
+  <div class="panel mb-3" id="batch_banner">
+    <div class="panel-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div>
+        <span class="badge-t yellow">执行中</span>
+        <span class="ms-2 text-dim" style="font-size:12px;">
+          批次 <code><%= @active_batch_id[0, 8] %></code>
+        </span>
+      </div>
+      <div class="d-flex gap-2">
+        <%= button_to "暂停", pause_transfers_path(batch_id: @active_batch_id),
+              method: :post, class: "btn-t ghost sm", form: { style: "display:inline" } %>
+        <%= button_to "继续", resume_transfers_path(batch_id: @active_batch_id),
+              method: :post, class: "btn-t ghost sm", form: { style: "display:inline" } %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div class="panel">
+  <div class="panel-header">
+    <span>分发记录</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table-terminal">
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>批次</th>
+          <th>分发地址</th>
+          <th>接收地址</th>
+          <th>币种</th>
+          <th class="num">金额</th>
+          <th>状态</th>
+          <th class="num">TX</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transfers.each do |t| %>
+          <%= render "transfers/row", transfer: t %>
+        <% end %>
+        <% if @transfers.empty? %>
+          <tr><td colspan="8" class="text-center text-mute py-4">还没有分发记录</td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel-header">
+    <span class="text-mute"><%== @pagy.series_nav %></span>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<% content_for :title, "Editing to address" %>
+
+<h1>Editing to address</h1>
+
+<%= render "form", to_address: @to_address %>
+
+<br>
+
+<div>
+  <%= link_to "Show this to address", @to_address %> |
+  <%= link_to "Back to to addresses", to_addresses_path %>
+</div>
