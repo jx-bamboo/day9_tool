@@ -81,9 +81,9 @@ class TransfersController < ApplicationController
   # GET /transfers/new_dispatch
   def new_dispatch
     @from_addresses = current_user.from_addresses.where.not(keystore: nil).order(:address)
-    @to_addresses   = current_user.to_addresses.order(:address)
-    @tokens         = Token.active
-    @default_token  = Token.native_for(56)
+    @pagy, @to_addresses = pagy(current_user.to_addresses.order(:address), items: 50)
+    @tokens = Token.active
+    @default_token = Token.native_for(56)
   end
 
   def submit_dispatch

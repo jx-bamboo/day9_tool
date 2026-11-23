@@ -1,11 +1,12 @@
 class FromAddressesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_from_address, only: %i[ show edit update destroy ]
+  include Pagy::Method
 
   # GET /from_addresses or /from_addresses.json
   def index
     # @from_addresses = FromAddress.all
-    @from_addresses = current_user.from_addresses.recent
+    @pagy, @from_addresses = pagy(current_user.from_addresses, items: 20)
   end
 
   # GET /from_addresses/1 or /from_addresses/1.json

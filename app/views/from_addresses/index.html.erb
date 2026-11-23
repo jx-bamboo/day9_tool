@@ -42,7 +42,7 @@
 
               <td class="num"><%= from_address.bnb_balance || 0 %></td>
               <td class="num"><%= from_address.token_balances %></td>
-              <td class="num"><%= from_address.balance_checked_at.in_time_zone('Asia/Shanghai').strftime('%Y.%m.%d %H:%M:%S') %></td>
+              <td class="num"><%= from_address.balance_checked_at&.in_time_zone('Asia/Shanghai')&.strftime('%Y.%m.%d %H:%M:%S') %></td>
 
               <td class="num d-flex justify-content-end">
                 <button
@@ -84,8 +84,8 @@
     </table>
   </div>
 
-  <div class="panel-header" style="border-top:1px solid var(--border); border-bottom:none;">
-    <span class="text-mute" style="font-size:11px;">共 2 条</span>
+  <div class="panel-header">
+    <span class="text-mute"><%== @pagy.series_nav %></span>
   </div>
 </div>
 <%= render "shared/backup_keystore_modal", modal_id: "backupFromModal", url: backup_keystore_from_addresses_path, scope_label: "分发地址" %>

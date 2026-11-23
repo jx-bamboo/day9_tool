@@ -8,8 +8,16 @@ class HomeController < ApplicationController
   end
 
   def index
-    @from_addresses = current_user.from_addresses.recent.limit(50)
-    @pagy, @to_addresses = pagy(current_user.to_addresses.recent, items: 20)
+    @from_pagy, @from_addresses = pagy(
+      current_user.from_addresses,
+      items: 20,
+      root_key: "from_page"
+    )
+    @to_pagy, @to_addresses = pagy(
+      current_user.to_addresses,
+      items: 50,
+      root_key: "to_page"
+    )
     # @tokens         = Token.active
     # @active_batch_id = Transfer.where(status: [:pending, :broadcasting]).pick(:batch_id)
     # @recent_transfers = Transfer.recent.includes(:from_address, :to_address, :token).limit(50)
